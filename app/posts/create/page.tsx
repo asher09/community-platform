@@ -17,7 +17,7 @@ export default function CreatePostPage() {
         setError("");
         setSuccess("");
         try {
-            const res = await axios.post("/api/posts", { title, content });
+            await axios.post("/api/posts", { title, content });
             setSuccess("Post created successfully!");
             setTitle("");
             setContent("");

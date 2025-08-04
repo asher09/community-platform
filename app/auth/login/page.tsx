@@ -50,6 +50,7 @@ export default function LoginPage() {
                 />
                 <Input 
                     label="Password" 
+                    type="password"
                     placeholder="Password" 
                     onChange={e => setPassword(e.target.value)} 
                     className="w-full" 

@@ -51,6 +51,7 @@ export default function RegisterPage() {
                     />
                     <Input 
                         label="Email" 
+                        type="password"
                         placeholder="Email" 
                         onChange={e => setEmail(e.target.value)} 
                         className="w-full" 

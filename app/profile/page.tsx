@@ -73,7 +73,7 @@ export default function ProfilePage() {
             )}
         </div>
         <div className="flex flex-col items-center w-full">
-            <div className="mb-4 text-lg font-bold text-white">User's Posts</div>
+            <div className="mb-4 text-lg font-bold text-white">User&apos;s Posts</div>
             {posts.length === 0 && !loading && !error && (
             <div className="text-neutral-400">No posts found.</div>
             )}
