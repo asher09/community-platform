@@ -3,11 +3,11 @@ import connectDB from "@/app/lib/db";
 import PostModel from "@/app/lib/models/Post";
 
 export async function GET(
-    req: NextRequest, 
-  { params }: { params: Record<string, string> }
+  req: NextRequest,
+  context: { params: Promise<{ userId: string }> }
 ) {
-    await connectDB();
-    const userId = params?.userId;
+  await connectDB();
+  const { userId } = await context.params;
     if (!userId || userId === "undefined") {
         return NextResponse.json({ error: "Invalid userId" }, { status: 400 });
     }
