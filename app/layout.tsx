@@ -23,7 +23,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <div style={{ display: "flex" }}>
-          <SideBar />
+          <div style={{  position: "fixed" }} >
+            <SideBar />
+          </div>
           <main style={{ flex: 1 }}>
             {children}
           </main>

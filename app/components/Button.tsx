@@ -3,16 +3,15 @@ import React from "react";
 interface ButtonProps {
     ButtonText: React.ReactNode;
     onClick?: () => void;
-    type?: "button" | "submit" | "reset";
     className?: string;
 }
 
-export default function Button({ ButtonText, onClick, type = "button", className = "" }: ButtonProps) {
+export default function Button({ ButtonText, onClick, className = "" }: ButtonProps) {
     return (
         <button
-            type={type}
             onClick={onClick}
-            className={`px-4 py-2 rounded-lg bg-[#ff3b3d] text-white font-semibold hover:bg-blue-700 transition ${className}`}
+            className={`px-15 py-2 rounded-full bg-[#e43d40] text-white font-normal cursor-pointer hover:bg-[#9c6c6c] transition ${className}`}
+            // style={{ fontFamily: 'var(--font-geist-sans)' }}
         >
             {ButtonText}
         </button>

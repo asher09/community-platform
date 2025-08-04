@@ -1,21 +1,34 @@
-
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import connectDB from "../../lib/db";
 import PostModel from "../../lib/models/Post";
 
 function getUserId(req: NextRequest): string | null {
-    const token = req.headers.get("authorization")?.replace("Bearer ", "");
+    // Read token from cookie instead of Authorization header
+    const token = req.cookies.get("token")?.value;
     if (!token) return null;
-    return (jwt.verify(token, process.env.JWT_SECRET || "") as any).id ?? null;
-
+    try {
+        return (jwt.verify(token, process.env.JWT_SECRET || "") as any).id ?? null;
+    } catch {
+        return null;
+    }
 }
  
 //fetch posts
 export async function GET() {
     await connectDB();
-    const posts = await PostModel.find({}).sort({ createdAt: -1 });
-    return NextResponse.json(posts);
+    // Fetch posts and return authorName directly
+    const posts = await PostModel.find({})
+        .sort({ createdAt: -1 })
+        .lean();
+    const result = posts.map(post => ({
+        title: post.title,
+        name: post.authorName || "Unknown",
+        authorId: post.author ? String(post.author) : "",
+        content: post.content,
+        createdAt: post.createdAt
+    }));
+    return NextResponse.json(result);
 }
 
 
@@ -39,10 +52,15 @@ export async function POST(req: NextRequest) {
             status: 400 
         });
     }
+    // Fetch author's name from User table
+    const UserModel = (await import("../../lib/models/User")).default;
+    const user = await UserModel.findById(userId).select("name");
+    const authorName = user?.name || "Unknown";
     const post = await PostModel.create({
         title,
         content,
-        author: userId
+        author: userId,
+        authorName
     });
     return NextResponse.json(post);
 }

@@ -4,6 +4,7 @@ export interface IPost {
   title: string;
   content: string;
   author: mongoose.Types.ObjectId;
+  authorName?: string;
   createdAt: Date;
 }
 
@@ -22,7 +23,10 @@ const PostSchema = new Schema<IPost>({
         ref: "User", 
         required: true 
     },
+    authorName: {
+        type: String,
+        required: false
+    },
 }, { timestamps: true });
 
-export default mongoose.model<IPost>("Post", PostSchema);
-
+export default mongoose.models.Post || mongoose.model<IPost>("Post", PostSchema);
