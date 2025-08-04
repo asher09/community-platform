@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/app/lib/db";
 import PostModel from "@/app/lib/models/Post";
 
-export async function GET(req: NextRequest, { params }: { params: { userId: string } }) {
+export async function GET(
+    req: NextRequest, 
+  { params }: { params: Record<string, string> }
+) {
     await connectDB();
     const userId = params?.userId;
     if (!userId || userId === "undefined") {
