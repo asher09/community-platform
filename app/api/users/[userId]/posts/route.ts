@@ -4,7 +4,7 @@ import PostModel from "@/app/lib/models/Post";
 
 export async function GET(req: NextRequest, { params }: { params: { userId: string } }) {
     await connectDB();
-    const userId = context?.params?.userId;
+    const userId = params?.userId;
     if (!userId || userId === "undefined") {
         return NextResponse.json({ error: "Invalid userId" }, { status: 400 });
     }
