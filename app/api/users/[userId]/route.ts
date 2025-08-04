@@ -2,10 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/app/lib/db";
 import UserModel from "@/app/lib/models/User";
 
-export async function GET(req: NextRequest, { params }: { params: { userId: string } }) {
-    await connectDB();
-    const awaitedParams = await params;
-    const userId = awaitedParams.userId;
+export async function GET(
+  req: NextRequest,
+  context: { params: Promise<{ userId: string }> }
+) {
+  await connectDB();
+  const { userId } = await context.params;
     if (!userId || userId === "undefined") {
         return NextResponse.json({ error: "Invalid userId" }, { status: 400 });
     }
