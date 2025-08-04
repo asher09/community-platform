@@ -4,8 +4,16 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
+type Blog = {
+  authorId: string;
+  title: string;
+  name: string;
+  createdAt: string;
+  content: string;
+};
+
 export default function Home() {
-  const [blogs, setBlogs] = useState([])
+  const [blogs, setBlogs] = useState<Blog[]>([])
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const router = useRouter();
@@ -17,8 +25,8 @@ export default function Home() {
         setError("");
         const res = await axios.get('/api/posts');
         setBlogs(res.data);
-      } catch (err: any) {
-        setError(err.message || "Error fetching blogs");
+      } catch (e) {
+        setError(e instanceof Error ? e.message : String(e));
       } finally {
         setLoading(false);
       }
@@ -34,7 +42,7 @@ export default function Home() {
         {blogs.length === 0 && !loading && !error && (
           <div className="text-neutral-400">No blogs found.</div>
         )}
-        {blogs.map((blog: any, index: number) => (
+        {blogs.map((blog, index: number) => (
           <div
             key={index}
             className="flex justify-center w-full"

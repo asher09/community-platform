@@ -26,7 +26,7 @@ export const authOptions: NextAuthOptions = {
                 };
                 const { email, password, name, bio } = credentials as AuthCredentials;
                 if (!email || !password) {
-                    const error: any = new Error("Missing email or password");
+                    const error = new Error("Missing email or password") as Error & { status?: number };
                     error.status = 411;
                     throw error;
                 }
@@ -54,7 +54,7 @@ export const authOptions: NextAuthOptions = {
                 } else {
                     if (!name || !bio) {
                         // missing required signup fields
-                        const error: any = new Error("Missing name or bio");
+                        const error = new Error("Missing name or bio") as Error & { status?: number };
                         error.status = 411;
                         throw error;
                     }

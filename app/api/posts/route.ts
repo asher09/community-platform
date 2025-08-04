@@ -8,7 +8,11 @@ function getUserId(req: NextRequest): string | null {
     const token = req.cookies.get("token")?.value;
     if (!token) return null;
     try {
-        return (jwt.verify(token, process.env.JWT_SECRET || "") as any).id ?? null;
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || "");
+        if (typeof decoded === "object" && decoded !== null && "id" in decoded) {
+            return (decoded as jwt.JwtPayload).id ?? null;
+        }
+        return null;
     } catch {
         return null;
     }

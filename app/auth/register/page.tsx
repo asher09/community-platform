@@ -25,8 +25,14 @@ export default function RegisterPage() {
             setSuccess("Registration successful! You can now log in.");
             setName(""); setEmail(""); setPassword(""); setBio("");
             router.push("/auth/login");
-        } catch (err: any) {
-            setError(err.response?.data?.error || err.message || "Error registering user");
+        } catch (err) {
+            if (axios.isAxiosError(err)) {
+                setError(err.response?.data?.error || err.message || "Error registering user");
+            } else if (err instanceof Error) {
+                setError(err.message || "Error registering user");
+            } else {
+                setError("Error registering user");
+            }
         } finally {
             setLoading(false);
         }

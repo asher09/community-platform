@@ -4,9 +4,21 @@ import Card from "../components/Card";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
 
+interface User {
+  name: string;
+  bio?: string;
+}
+
 export default function ProfilePage() {
-    const [user, setUser] = useState<any>(null);
-    const [posts, setPosts] = useState([]);
+    const [user, setUser] = useState<User | null>(null);
+    type Post = {
+        _id: string;
+        title: string;
+        content: string;
+        createdAt: string;
+        // add other fields if needed
+    };
+    const [posts, setPosts] = useState<Post[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const searchParams = useSearchParams();
@@ -28,8 +40,12 @@ export default function ProfilePage() {
             ]);
             setUser(userRes.data);
             setPosts(postsRes.data);
-        } catch (err: any) {
-            setError(err.message || "Error fetching profile");
+        } catch (err) {
+            if (typeof err === "object" && err !== null && "message" in err) {
+                setError((err as { message?: string }).message || "Error fetching profile");
+            } else {
+                setError("Error fetching profile");
+            }
         } finally {
             setLoading(false);
         }
@@ -61,7 +77,7 @@ export default function ProfilePage() {
             {posts.length === 0 && !loading && !error && (
             <div className="text-neutral-400">No posts found.</div>
             )}
-            {posts.map((post: any) => (
+            {posts.map((post) => (
             <Card
                 key={post._id}
                 title={post.title}

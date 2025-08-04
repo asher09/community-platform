@@ -21,8 +21,14 @@ export default function CreatePostPage() {
             setSuccess("Post created successfully!");
             setTitle("");
             setContent("");
-        } catch (err: any) {
-            setError(err.response?.data?.error || err.message || "Error creating post");
+        } catch (err) {
+            if (axios.isAxiosError(err)) {
+                setError(err.response?.data?.error || err.message || "Error creating post");
+            } else if (err instanceof Error) {
+                setError(err.message || "Error creating post");
+            } else {
+                setError("Error creating post");
+            }
         } finally {
             setLoading(false);
         }

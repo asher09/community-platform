@@ -24,8 +24,14 @@ export default function LoginPage() {
         setEmail(""); setPassword("");
         router.push("/");
 
-    } catch (err: any) {
-        setError(err.response?.data?.error || err.message || "Error logging in");
+    } catch (err) {
+        if (axios.isAxiosError(err)) {
+            setError(err.response?.data?.error || err.message || "Error logging in");
+        } else if (err instanceof Error) {
+            setError(err.message || "Error logging in");
+        } else {
+            setError("Error logging in");
+        }
     } finally {
         setLoading(false);
     }

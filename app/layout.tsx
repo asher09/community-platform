@@ -23,10 +23,21 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <div style={{ display: "flex" }}>
-          <div style={{  position: "fixed" }} >
+          <div 
+            style={{
+              position: "fixed",
+              left: 0,
+              top: 0,
+              height: "100vh",
+              width: 70,
+              zIndex: 100,
+              background: "#181818",
+              borderRight: "1px solid #222"
+            }}
+          >
             <SideBar />
           </div>
-          <main style={{ flex: 1 }}>
+          <main style={{ marginLeft: 70, flex: 1 }}>
             {children}
           </main>
         </div>
